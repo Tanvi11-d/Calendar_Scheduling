@@ -14,6 +14,7 @@ def get_schedule(query:str):
     try:
         result=tool_result(query)
         answer=result.get('messages')[-1].content
+        
         return {"answer":answer}
      
     except Exception as e:
