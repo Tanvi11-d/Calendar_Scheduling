@@ -27,7 +27,7 @@ def create_event(title:str,time,duration_minutes=60):
         except:
             dt=datetime.strftime(time,"%d-%B-%Y %I%p")
         isoformat_date=dt.isoformat()
-
+        day=dt.strftime('%A')
         if os.path.exists(schedule) and os.path.getsize(schedule)>0:
             with open(schedule,'r') as file:
                 schedules=json.load(file)
@@ -39,7 +39,7 @@ def create_event(title:str,time,duration_minutes=60):
             if i["time"]==isoformat_date and i["title"].lower()==title.lower() and i["duration_minutes"]==duration_minutes:
                 return "Event already exists"
             
-        event={'title':title,'time':isoformat_date,'duration_minutes':duration_minutes}
+        event={'title':title,'time':isoformat_date,'days':day,'duration_minutes':duration_minutes}
         schedules.append(event)
         with open(schedule,'w') as file:
             json.dump(schedules,file,indent=4)
@@ -139,6 +139,8 @@ Rules:
 - If user not define start time of events then take anything start time for that day and default duration minutes is 60.
 - if user give range of events then store in separatly.
 - do not create duplicates events.
+- if user give specific day for events (example:- wednesday),
+    i)store separate weekdays event one by one with same time and title.
 - if user give date of range events(example:- create schedule 1 april to 5 april),
     i)create separate event one by one with same time and title.
     
